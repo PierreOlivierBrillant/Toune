@@ -15,6 +15,17 @@ window.addEventListener('error', (event) => {
   return true;
 });
 
+// Filtrer les avertissements de console spécifiques au SDK Spotify
+const originalConsoleWarn = console.warn;
+console.warn = function(...args: any[]) {
+  // Filtrer l'avertissement de robustesse du SDK Spotify
+  if (args.length > 0 && typeof args[0] === 'string' && 
+      args[0].includes('robustness level')) {
+    return; // Ne pas afficher cet avertissement
+  }
+  originalConsoleWarn.apply(console, args);
+};
+
 // Gestion des promesses rejetées non capturées
 window.addEventListener('unhandledrejection', (event) => {
   // Filtrer les erreurs du SDK Spotify

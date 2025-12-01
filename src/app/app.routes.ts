@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { SpotifyCallbackComponent } from './page/spotify-callback/spotify-callback.component';
 import { HomeComponent } from './page/home/home.component';
-import { AdminComponent } from './page/admin/admin.component';
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
@@ -16,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminComponent,
+    loadComponent: () => import('./page/admin/admin.component').then(m => m.AdminComponent),
     canActivate: [authGuard],
   },
 ];

@@ -6,24 +6,28 @@
     <title>Grosse Toune</title>
     <script>
         // Script de redirection SPA pour GitHub Pages
-        // Convertit le chemin en paramètre de requête pour que index.html puisse le récupérer
-        const segment = 1; // Nombre de segments de chemin à garder (1 pour le nom du repo)
-        const pathSegmentsToKeep = segment;
-
-        const l = window.location;
-        const pathArray = l.pathname.split('/');
-
-        // Garde les premiers segments (ex: /repo-name/) et encode le reste
-        const repo = pathArray.slice(1, 1 + pathSegmentsToKeep).join('/');
-        const path = pathArray.slice(1 + pathSegmentsToKeep).join('/');
-
-        // Redirige vers index.html avec le chemin encodé
-        l.replace(
-            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            '/' + repo + '/?p=/' + path +
-            (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-            l.hash
-        );
+        // Gère spécifiquement le repo "Toune" sur GitHub Pages
+        (function() {
+            const l = window.location;
+            const pathArray = l.pathname.split('/').filter(Boolean);
+            
+            // Pour GitHub Pages avec le repo "Toune"
+            if (pathArray[0] === 'Toune') {
+                // Récupère le chemin après /Toune/
+                const path = '/' + pathArray.slice(1).join('/');
+                const search = l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '';
+                
+                // Redirige vers /Toune/ avec le paramètre p
+                const redirectUrl = l.protocol + '//' + l.hostname + 
+                    (l.port ? ':' + l.port : '') + '/Toune/?p=' + 
+                    encodeURIComponent(path) + search + l.hash;
+                
+                l.replace(redirectUrl);
+            } else {
+                // Fallback pour d'autres cas
+                l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/');
+            }
+        })();
     </script>
 </head>
 

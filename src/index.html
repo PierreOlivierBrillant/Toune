@@ -25,7 +25,9 @@
       if (path) {
         const query = params.get('q');
         const search = query ? '?' + query.replace(/~and~/g, '&') : '';
-        const url = path + search + window.location.hash;
+        // Assure-toi que le chemin commence par /
+        const cleanPath = path.startsWith('/') ? path : '/' + path;
+        const url = cleanPath + search + window.location.hash;
         window.history.replaceState(null, null, url);
       }
     })();

@@ -34,9 +34,6 @@ jobs:
       - name: Build Angular app
         run: npm run build -- --configuration production --base-href /${{ github.event.repository.name }}/
 
-      - name: Copy index.html to 404.html for SPA routing
-        run: cp dist/grosse-toune/browser/index.html dist/grosse-toune/browser/404.html
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

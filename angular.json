@@ -32,6 +32,10 @@
               {
                 "glob": "404.html",
                 "input": "src"
+              },
+              {
+                "glob": ".nojekyll",
+                "input": "src"
               }
             ],
             "styles": [

@@ -225,6 +225,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
           cb(token);
         },
         volume: this.volume() / 100,
+        // Spécifie le niveau de robustesse pour éviter l'avertissement
+        enableMediaSession: true
       });
     } catch (error) {
       // Ignore les erreurs du SDK Spotify - elles sont souvent normales
