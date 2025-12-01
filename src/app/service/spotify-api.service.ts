@@ -111,8 +111,12 @@ export class SpotifyApiService {
         // Nouvelle recherche
         this.searchResults.set(data.tracks.items);
       } else {
-        // Ajouter à la liste existante (pagination)
-        this.searchResults.update((current) => [...current, ...data.tracks.items]);
+        // Ajouter à la liste existante (pagination) en évitant les doublons
+        this.searchResults.update((current) => {
+          const currentIds = new Set(current.map((t) => t.id));
+          const newItems = data.tracks.items.filter((item) => !currentIds.has(item.id));
+          return [...current, ...newItems];
+        });
       }
 
       this.totalResults.set(data.tracks.total);
