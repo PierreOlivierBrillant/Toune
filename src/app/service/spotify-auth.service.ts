@@ -23,6 +23,25 @@ export class SpotifyAuthService {
   }
 
   /**
+   * Détermine l'URL de callback en fonction de l'environnement
+   * - Développement local : ${origin}/callback
+   * - Production GitHub Pages : ${origin}/Toune/callback
+   */
+  private getCallbackUri(): string {
+    const origin = window.location.origin;
+    const pathname = window.location.pathname;
+
+    // Si on est sur GitHub Pages (domaine contient github.io ET pathname commence par /Toune)
+    // ou si on est en production et que le pathname contient /Toune/
+    if (origin.includes('github.io') || pathname.startsWith('/Toune/')) {
+      return `${origin}/Toune/callback`;
+    }
+
+    // Sinon, on est en développement local
+    return `${origin}/callback`;
+  }
+
+  /**
    * Génère un code challenge pour PKCE à partir du code verifier (SHA-256)
    * Utilise crypto.subtle si disponible (HTTPS), sinon fallback vers une implémentation JS pure
    */
@@ -196,7 +215,7 @@ export class SpotifyAuthService {
     localStorage.setItem('spotify_auth_state', state);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
 
-    const redirectUri = `${window.location.origin}/Toune/callback`;
+    const redirectUri = this.getCallbackUri();
 
     // Generate code challenge asynchronously then redirect
     this.generateCodeChallenge(codeVerifier).then((codeChallenge) => {
@@ -235,7 +254,7 @@ export class SpotifyAuthService {
     formData.set('client_id', environment.clientId);
     formData.set('grant_type', 'authorization_code');
     formData.set('code', code);
-    formData.set('redirect_uri', `${window.location.origin}/Toune/callback`);
+    formData.set('redirect_uri', this.getCallbackUri());
     formData.set('code_verifier', codeVerifier);
 
     const res = await fetch(`${environment.spotifyApiUrl}/api/token`, {
