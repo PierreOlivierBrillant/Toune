@@ -1,15 +1,24 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
 .search-container {
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 24px;
   padding-left: 16px;
   padding-right: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 /* Barre de recherche */
 .search-bar {
-  position: sticky;
-  top: 0;
+  position: relative;
+  flex-shrink: 0;
   z-index: 100;
   background: var(--mat-sys-surface, #121212);
   padding-bottom: 16px;
@@ -102,6 +111,11 @@
 /* Section des résultats */
 .results-section {
   margin-top: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .results-header {
@@ -125,10 +139,11 @@
 }
 
 .results-container {
-  max-height: 73vh;
+  flex: 1;
   overflow-y: auto;
   border-radius: 8px;
   padding-right: 10px;
+  min-height: 0;
 
   /* Scrollbar styling */
   &::-webkit-scrollbar {
@@ -147,6 +162,15 @@
   &::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
   }
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 /* Header des colonnes */
@@ -162,6 +186,10 @@
   color: #b3b3b3;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #121212;
 
   .header-number {
     text-align: center;
@@ -520,7 +548,7 @@
 }
 
 /* Design responsive */
-@media (max-width: 768px) {
+@media (max-width: 769px) {
   .search-container {
     padding: 16px 12px;
   }
@@ -536,6 +564,17 @@
 
     .track-album {
       display: none; // Masquer l'album sur mobile
+    }
+
+    // Afficher les boutons d'action sur mobile/tablette sans hover
+    .track-number {
+      .track-index {
+        display: none;
+      }
+
+      .play-button {
+        display: flex;
+      }
     }
   }
 
@@ -576,12 +615,8 @@
     margin: 0;
   }
 
-  .tracks-header {
-    display: none;
-  }
-
   .track-item {
-    grid-template-columns: 40px 1fr auto;
+    grid-template-columns: 40px 1fr;
     gap: 8px;
     padding: 8px 0;
 
@@ -598,9 +633,7 @@
     }
 
     .track-duration {
-      font-size: 12px;
-      text-align: right;
-      padding-right: 12px;
+      display: none;
     }
   }
 

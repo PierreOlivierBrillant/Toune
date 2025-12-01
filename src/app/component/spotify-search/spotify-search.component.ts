@@ -70,19 +70,12 @@ export class SpotifySearchComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Ajouter l'écouteur de scroll pour le chargement infini
-    if (this.resultsContainer) {
-      this.scrollListener = () => this.onScroll();
-      this.resultsContainer.nativeElement.addEventListener('scroll', this.scrollListener);
-    }
+    // L'écouteur de scroll est maintenant géré dans le template via (scroll)="onScroll()"
   }
 
   ngOnDestroy(): void {
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout);
-    }
-    if (this.scrollListener && this.resultsContainer) {
-      this.resultsContainer.nativeElement.removeEventListener('scroll', this.scrollListener);
     }
   }
 
@@ -125,14 +118,14 @@ export class SpotifySearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onScroll(): void {
+  onScroll(): void {
     if (!this.resultsContainer) return;
 
     const element = this.resultsContainer.nativeElement;
     const { scrollTop, scrollHeight, clientHeight } = element;
 
-    // Si on est proche du bas (100px avant la fin)
-    if (scrollHeight - scrollTop - clientHeight < 100) {
+    // Si on est proche du bas (300px avant la fin)
+    if (scrollHeight - scrollTop - clientHeight < 300) {
       const query = this.searchQuery();
       if (query && this.api.hasMoreResults() && !this.api.isSearching()) {
         this.api.loadMoreResults(query);

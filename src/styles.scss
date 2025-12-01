@@ -7,7 +7,9 @@
 
 // Override Material Menu avec des couleurs sombres - application globale
 :root {
-  @include mat.menu-overrides((container-color: #000000,
+  @include mat.menu-overrides(
+    (
+      container-color: #000000,
       container-shape: 8px,
       divider-color: #333333,
       item-label-text-color: #ffffff,
@@ -15,25 +17,33 @@
       item-hover-state-layer-color: rgba(255, 255, 255, 0.1),
       item-focus-state-layer-color: rgba(255, 255, 255, 0.1),
       container-elevation-shadow: rgba(0, 0, 0, 0.8),
-    ));
+    )
+  );
 }
 
 // Style spécifique pour notre menu utilisateur avec classe personnalisée
 .user-menu-container {
-  @include mat.menu-overrides((container-color: #000000,
+  @include mat.menu-overrides(
+    (
+      container-color: #000000,
       item-label-text-color: #ffffff,
       item-icon-color: #ffffff,
       divider-color: #444444,
-    ));
+    )
+  );
 }
 
 html {
-  @include mat.theme((color: (primary: mat.$azure-palette,
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    ));
+    )
+  );
 }
 
 body {
@@ -58,11 +68,18 @@ body {
 html,
 body {
   height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 // Styles globaux pour le menu utilisateur - fond sombre forcé
@@ -121,7 +138,6 @@ body {
 }
 
 .mat-mdc-snack-bar-container {
-
   .success-snackbar,
   .error-snackbar {
     .mat-mdc-snack-bar-surface {
