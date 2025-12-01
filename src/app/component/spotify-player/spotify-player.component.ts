@@ -193,6 +193,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
       script.async = true;
+      script.crossOrigin = 'anonymous'; 
 
       script.onload = () => {
         // Wait a bit for the SDK to initialize
@@ -213,6 +214,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     try {
       // Check if Spotify SDK is available
       if (!(<any>window).Spotify) {
+        console.warn('Spotify SDK not available');
         this.isLoading.set(false);
         return;
       }
@@ -225,6 +227,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         volume: this.volume() / 100,
       });
     } catch (error) {
+      // Ignore les erreurs du SDK Spotify - elles sont souvent normales
+      console.warn('Erreur lors de la création du player Spotify (ignorée):', error);
       this.isLoading.set(false);
       return;
     }
@@ -249,21 +253,25 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Error listeners - Silent mode
-    this.player.addListener('initialization_error', () => {
+    // Error listeners - Silent mode avec logging minimal
+    this.player.addListener('initialization_error', ({ message }: { message: string }) => {
+      console.warn('Spotify initialization error (ignoré):', message);
       this.isLoading.set(false);
     });
 
-    this.player.addListener('authentication_error', () => {
+    this.player.addListener('authentication_error', ({ message }: { message: string }) => {
+      console.warn('Spotify authentication error (ignoré):', message);
       this.isLoading.set(false);
     });
 
-    this.player.addListener('account_error', () => {
+    this.player.addListener('account_error', ({ message }: { message: string }) => {
+      console.warn('Spotify account error (ignoré):', message);
       this.isLoading.set(false);
     });
 
-    this.player.addListener('playback_error', () => {
-      // Ignore playback errors silently
+    this.player.addListener('playback_error', ({ message }: { message: string }) => {
+      // Ignore playback errors silently mais log pour debug si nécessaire
+      console.warn('Spotify playback error (ignoré):', message);
     });
 
     // Connect player - Silent mode
@@ -284,9 +292,14 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       let isLocal = false;
 
       if (this.player) {
-        state = await this.player.getCurrentState();
-        if (state) {
-          isLocal = true;
+        try {
+          state = await this.player.getCurrentState();
+          if (state) {
+            isLocal = true;
+          }
+        } catch (error) {
+          // Ignore les erreurs de getCurrentState - elles sont courantes
+          return;
         }
       }
 
