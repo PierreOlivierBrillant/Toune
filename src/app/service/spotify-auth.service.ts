@@ -196,7 +196,7 @@ export class SpotifyAuthService {
     localStorage.setItem('spotify_auth_state', state);
     localStorage.setItem('spotify_code_verifier', codeVerifier);
 
-    const redirectUri = `${window.location.origin}/callback`;
+    const redirectUri = `${window.location.origin}/Toune/callback`;
 
     // Generate code challenge asynchronously then redirect
     this.generateCodeChallenge(codeVerifier).then((codeChallenge) => {
@@ -235,7 +235,7 @@ export class SpotifyAuthService {
     formData.set('client_id', environment.clientId);
     formData.set('grant_type', 'authorization_code');
     formData.set('code', code);
-    formData.set('redirect_uri', `${window.location.origin}/callback`);
+    formData.set('redirect_uri', `${window.location.origin}/Toune/callback`);
     formData.set('code_verifier', codeVerifier);
 
     const res = await fetch(`${environment.spotifyApiUrl}/api/token`, {

@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, NgZone  } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,7 @@ export interface SpotifySubmission {
 export class SignalRService {
   private hubConnection: HubConnection | null = null;
   private snackBar = inject(MatSnackBar);
+  private zone = inject(NgZone);
 
   public isConnected = signal(false);
   public submissions = signal<SpotifySubmission[]>([]);
