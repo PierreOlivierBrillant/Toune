@@ -149,9 +149,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       this.isLoading.set(true);
 
-      // Load Spotify Web Playback SDK
-      await this.loadSpotifySDK();
-
       const token = await this.auth.getValidToken();
 
       // Set up SDK ready callback with timeout fallback
@@ -159,24 +156,32 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         this.connectPlayer(token);
       };
 
-      // Wait for SDK to be ready with timeout
-      let attempts = 0;
-      const maxAttempts = 20; // 10 seconds maximum
+      // Load Spotify Web Playback SDK
+      await this.loadSpotifySDK();
 
-      const checkSDKReady = () => {
-        attempts++;
+      // If SDK is already ready (e.g. loaded from cache or previous navigation), connect immediately
+      if ((<any>window).Spotify) {
+        this.connectPlayer(token);
+      } else {
+        // Wait for SDK to be ready with timeout
+        let attempts = 0;
+        const maxAttempts = 20; // 10 seconds maximum
 
-        if ((<any>window).Spotify) {
-          this.connectPlayer(token);
-        } else if (attempts < maxAttempts) {
-          setTimeout(checkSDKReady, 500);
-        } else {
-          this.isLoading.set(false);
-        }
-      };
+        const checkSDKReady = () => {
+          attempts++;
 
-      // Start checking
-      setTimeout(checkSDKReady, 100);
+          if ((<any>window).Spotify) {
+            this.connectPlayer(token);
+          } else if (attempts < maxAttempts) {
+            setTimeout(checkSDKReady, 500);
+          } else {
+            this.isLoading.set(false);
+          }
+        };
+
+        // Start checking
+        setTimeout(checkSDKReady, 100);
+      }
     } catch (error) {
       this.isLoading.set(false);
     }
@@ -193,7 +198,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
       script.async = true;
-      script.crossOrigin = 'anonymous'; 
+      script.crossOrigin = 'anonymous';
 
       script.onload = () => {
         // Wait a bit for the SDK to initialize
@@ -211,6 +216,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   private connectPlayer(token: string): void {
+    if (this.player) {
+      return;
+    }
+
     try {
       // Check if Spotify SDK is available
       if (!(<any>window).Spotify) {
@@ -226,7 +235,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         },
         volume: this.volume() / 100,
         // Spécifie le niveau de robustesse pour éviter l'avertissement
-        enableMediaSession: true
+        enableMediaSession: true,
       });
     } catch (error) {
       // Ignore les erreurs du SDK Spotify - elles sont souvent normales
