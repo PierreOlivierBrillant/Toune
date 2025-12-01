@@ -31,6 +31,24 @@
       color: #666;
       margin-bottom: 2rem;
     }
+
+    .qr-code-container {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      img {
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      span {
+        color: #b3b3b3;
+        font-size: 0.9rem;
+      }
+    }
   }
 
   .search-section {
