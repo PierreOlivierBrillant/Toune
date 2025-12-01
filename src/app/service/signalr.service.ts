@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, NgZone  } from '@angular/core';
+import { Injectable, inject, signal, NgZone } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -37,9 +37,11 @@ export class SignalRService {
       .catch((err) => console.log('Error while starting connection: ' + err));
 
     this.hubConnection.on('SpotifySubmissionReceived', (submission: SpotifySubmission) => {
-      this.submissions.update((current) => [...current, submission]);
-      this.snackBar.open(`Nouvelle demande de ${submission.fullName}`, 'OK', {
-        duration: 3000,
+      this.zone.run(() => {
+        this.submissions.update((current) => [...current, submission]);
+        this.snackBar.open(`Nouvelle demande de ${submission.fullName}`, 'OK', {
+          duration: 3000,
+        });
       });
     });
 
