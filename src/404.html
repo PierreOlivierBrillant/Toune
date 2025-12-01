@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Grosse Toune</title>
+    <script>
+        // Script de redirection SPA pour GitHub Pages
+        // Convertit le chemin en paramètre de requête pour que index.html puisse le récupérer
+        const segment = 1; // Nombre de segments de chemin à garder (1 pour le nom du repo)
+        const pathSegmentsToKeep = segment;
+
+        const l = window.location;
+        const pathArray = l.pathname.split('/');
+
+        // Garde les premiers segments (ex: /repo-name/) et encode le reste
+        const repo = pathArray.slice(1, 1 + pathSegmentsToKeep).join('/');
+        const path = pathArray.slice(1 + pathSegmentsToKeep).join('/');
+
+        // Redirige vers index.html avec le chemin encodé
+        l.replace(
+            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+            '/' + repo + '/?p=/' + path +
+            (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash
+        );
+    </script>
+</head>
+
+<body>
+    Redirection en cours...
+</body>
+
+</html>

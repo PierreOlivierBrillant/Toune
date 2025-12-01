@@ -1,0 +1,9 @@
+<div>
+    @if (isLoading) {
+    <p>Connexion en cours...</p>
+    }
+    @if (error) {
+    <p>Erreur: {{ error }}</p>
+    <button (click)="retry()">Réessayer</button>
+    }
+</div>

@@ -1,0 +1,85 @@
+<div class="player-container">
+  @if (!auth.isAuthenticated()) {
+  <!-- Player hidden when not authenticated -->
+  } @else if (isPlayerReady()) {
+
+  <!-- Section gauche : En cours de lecture -->
+  <div class="now-playing">
+    @if (currentTrack(); as track) {
+    <div class="track-info">
+      @if (track.album.images[0]?.url) {
+      <img [src]="track.album.images[0].url" [alt]="track.name" class="album-art" />
+      } @else {
+      <div class="album-art"></div>
+      }
+      <div class="track-details">
+        <div class="track-name">{{ track.name }}</div>
+        <div class="artist-name">{{ getArtistsString(track.artists) }}</div>
+      </div>
+    </div>
+    } @else {
+    <div class="no-track">Aucune musique en cours</div>
+    }
+  </div>
+
+  <!-- Section centre : Contrôles de lecture -->
+  <div class="player-controls">
+    <div class="controls-top">
+      <button
+        (click)="playPreviousTrack()"
+        class="control-btn"
+        [disabled]="!canSkipToPrevious()"
+        aria-label="Piste précédente"
+      >
+        <mat-icon>skip_previous</mat-icon>
+      </button>
+
+      <button
+        (click)="togglePlay()"
+        class="control-btn play-pause"
+        aria-label="{{ isPaused() ? 'Lecture' : 'Pause' }}"
+      >
+        <mat-icon>{{ isPaused() ? 'play_arrow' : 'pause' }}</mat-icon>
+      </button>
+
+      <button
+        (click)="playNextTrack()"
+        class="control-btn"
+        [disabled]="!canSkipToNext()"
+        aria-label="Piste suivante"
+      >
+        <mat-icon>skip_next</mat-icon>
+      </button>
+    </div>
+
+    <div class="progress-section">
+      <span class="time-display">{{ formatTime(position()) }}</span>
+      <div class="progress-bar" (click)="seekToPosition($event)">
+        <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+      </div>
+      <span class="time-display">{{ formatTime(duration()) }}</span>
+    </div>
+  </div>
+
+  <!-- Section droite : Contrôles de volume -->
+  <div class="volume-section">
+    <button (click)="toggleMute()" class="volume-btn" aria-label="Couper/Remettre le son">
+      <mat-icon>{{
+        volume() === 0 ? 'volume_off' : volume() < 50 ? 'volume_down' : 'volume_up'
+      }}</mat-icon>
+    </button>
+    <div class="volume-bar" (click)="setVolumeFromClick($event)">
+      <div class="volume-fill" [style.width.%]="volume()"></div>
+    </div>
+  </div>
+  } @else if (isLoading()) {
+  <div class="player-loading">
+    <p>Chargement du lecteur...</p>
+  </div>
+  } @else {
+  <div class="player-error">
+    <p>Lecteur non disponible</p>
+    <button (click)="initializePlayer()" class="retry-btn">Réessayer</button>
+  </div>
+  }
+</div>

@@ -1,0 +1,13 @@
+<div class="home-container">
+  @if (auth.isAuthenticated()) {
+  <div class="search-section">
+    <spotify-search></spotify-search>
+  </div>
+  } @else {
+  <div class="connect-section">
+    <h1>Toune</h1>
+    <p>Bienvenue dans votre application de streaming Spotify</p>
+    <spotify-connect></spotify-connect>
+  </div>
+  }
+</div>

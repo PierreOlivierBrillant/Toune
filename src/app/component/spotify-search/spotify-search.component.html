@@ -1,0 +1,121 @@
+<div class="search-container">
+  <!-- Barre de recherche -->
+  <div class="search-bar">
+    <div class="search-input-wrapper">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Que souhaitez-vous écouter ?"
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+        autocomplete="off"
+      />
+    </div>
+  </div>
+
+  <!-- Résultats de recherche -->
+  @if (auth.isAuthenticated()) {
+  <div class="results-section">
+    @if (searchQuery() && totalResults() > 0) {
+    <div class="results-header">
+      <h2>Chansons</h2>
+      <span class="results-count">{{ totalResults() }} résultat(s)</span>
+    </div>
+    }
+
+    <div class="results-container" #resultsContainer>
+      @if (searchResults().length > 0) {
+      <!-- Header des colonnes -->
+      <div class="tracks-header">
+        <div class="header-number">#</div>
+        <div class="header-title">Titre</div>
+        <div class="header-album">Album</div>
+        <div class="header-duration">
+          <mat-icon>schedule</mat-icon>
+        </div>
+      </div>
+
+      <div class="tracks-list">
+        @for (track of searchResults(); track track.id) {
+        <div class="track-item">
+          <!-- Colonne # avec bouton play -->
+          <div class="track-number">
+            @if (!isTrackPlaying(track.id)) {
+            <span class="track-index">{{ $index + 1 }}</span>
+            <button
+              class="play-button"
+              (click)="playTrack(track)"
+              aria-label="Ajouter {{ track.name }}"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+            } @else {
+            <div class="playing-indicator">
+              @if (playingTrack() === track.id) {
+              <mat-spinner diameter="16"></mat-spinner>
+              } @else {
+              <mat-icon class="playing-icon">volume_up</mat-icon>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Colonne Titre avec image et info -->
+          <div class="track-title-column">
+            <div class="track-image">
+              @if (getAlbumImage(track); as image) {
+              <img [src]="image" [alt]="track.album.name" class="album-cover" />
+              } @else {
+              <div class="album-placeholder">
+                <mat-icon>music_note</mat-icon>
+              </div>
+              }
+            </div>
+            <div class="track-info">
+              <div class="track-title">
+                {{ track.name }}
+                @if (track.explicit) {
+                <span class="explicit-badge">E</span>
+                }
+              </div>
+              <div class="track-artist">{{ getArtistsString(track.artists) }}</div>
+            </div>
+          </div>
+
+          <!-- Colonne Album -->
+          <div class="track-album">{{ track.album.name }}</div>
+
+          <!-- Colonne Durée -->
+          <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
+        </div>
+        }
+      </div>
+
+      <!-- Indicateur de chargement pour la pagination -->
+      @if (isSearching()) {
+      <div class="loading-more">
+        <mat-spinner diameter="24"></mat-spinner>
+        <span>Chargement...</span>
+      </div>
+      } } @else if (searchQuery() && !isSearching()) {
+      <div class="no-results">
+        <mat-icon class="no-results-icon">search_off</mat-icon>
+        <h3>Aucun résultat trouvé pour "{{ searchQuery() }}"</h3>
+        <p>Essayez d'utiliser d'autres mots-clés ou vérifiez l'orthographe.</p>
+      </div>
+      } @else if (isSearching() && searchResults().length === 0) {
+      <div class="searching">
+        <mat-spinner diameter="32"></mat-spinner>
+        <span>Recherche en cours...</span>
+      </div>
+      } @else if (!searchQuery()) {
+      <div class="welcome-search">
+        <mat-icon class="search-welcome-icon">music_note</mat-icon>
+        <h3>Tapez dans la barre de recherche une chanson qui vous plaît</h3>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

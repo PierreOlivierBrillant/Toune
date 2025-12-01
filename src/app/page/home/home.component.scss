@@ -1,0 +1,34 @@
+ .home-container {
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+
+     .connect-section {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+
+         h1 {
+             color: #1db954;
+             font-size: 2.5rem;
+             margin-bottom: 1rem;
+         }
+
+         p {
+             font-size: 1.2rem;
+             color: #666;
+             margin-bottom: 2rem;
+         }
+     }
+
+     .search-section {
+         flex: 1;
+     }
+
+     .player-section {
+         height: 90px;
+         display: flex;
+         justify-content: center;
+     }
+ }

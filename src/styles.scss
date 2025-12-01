@@ -1,0 +1,135 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+// Override Material Menu avec des couleurs sombres - application globale
+:root {
+  @include mat.menu-overrides((container-color: #000000,
+      container-shape: 8px,
+      divider-color: #333333,
+      item-label-text-color: #ffffff,
+      item-icon-color: #ffffff,
+      item-hover-state-layer-color: rgba(255, 255, 255, 0.1),
+      item-focus-state-layer-color: rgba(255, 255, 255, 0.1),
+      container-elevation-shadow: rgba(0, 0, 0, 0.8),
+    ));
+}
+
+// Style spécifique pour notre menu utilisateur avec classe personnalisée
+.user-menu-container {
+  @include mat.menu-overrides((container-color: #000000,
+      item-label-text-color: #ffffff,
+      item-icon-color: #ffffff,
+      divider-color: #444444,
+    ));
+}
+
+html {
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: dark;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Styles globaux pour le menu utilisateur - fond sombre forcé
+.mat-mdc-menu-panel.user-menu {
+  background: #0d1117 !important;
+  border: 1px solid #30363d !important;
+  border-radius: 8px !important;
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.8), 0 6px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-mdc-menu-content {
+  background: #0d1117 !important;
+  padding: 8px 0 !important;
+  border-radius: 8px !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-mdc-menu-item {
+  background: #0d1117 !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  min-height: 44px !important;
+  font-weight: 400 !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-mdc-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-mdc-menu-item[disabled] {
+  background: #0d1117 !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-mdc-menu-item[disabled]:hover {
+  background: #0d1117 !important;
+}
+
+.mat-mdc-menu-panel.user-menu .mat-divider {
+  border-top-color: #30363d !important;
+  margin: 8px 0 !important;
+}
+
+/* Styles pour les notifications */
+.success-snackbar {
+  --mdc-snackbar-container-color: #1db954 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #e22134 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}
+
+.mat-mdc-snack-bar-container {
+
+  .success-snackbar,
+  .error-snackbar {
+    .mat-mdc-snack-bar-surface {
+      color: #ffffff !important;
+    }
+
+    .mat-mdc-button {
+      color: #ffffff !important;
+    }
+  }
+}

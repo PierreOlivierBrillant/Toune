@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Toune</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Script de redirection SPA pour GitHub Pages -->
+  <script>
+    (function () {
+      const redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+    // Gestion du paramètre ?p= pour la redirection depuis 404.html
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const path = params.get('p');
+      if (path) {
+        const query = params.get('q');
+        const search = query ? '?' + query.replace(/~and~/g, '&') : '';
+        const url = path + search + window.location.hash;
+        window.history.replaceState(null, null, url);
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>
