@@ -20,13 +20,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { firstValueFrom } from 'rxjs';
 import { SignalRService } from '../../service/signalr.service';
+import { UserProfileComponent } from '../user-profile/user-profile.component';
 
 @Component({
   selector: 'spotify-search',
   templateUrl: './spotify-search.component.html',
   styleUrl: './spotify-search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIconModule, MatProgressSpinnerModule, FormsModule],
+  imports: [MatIconModule, MatProgressSpinnerModule, FormsModule, UserProfileComponent],
 })
 export class SpotifySearchComponent implements OnInit, OnDestroy {
   @ViewChild('resultsContainer') resultsContainer!: ElementRef<HTMLDivElement>;

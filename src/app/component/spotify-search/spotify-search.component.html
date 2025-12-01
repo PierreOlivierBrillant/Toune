@@ -1,16 +1,19 @@
 <div class="search-container">
   <!-- Barre de recherche -->
   <div class="search-bar">
-    <div class="search-input-wrapper">
-      <mat-icon class="search-icon">search</mat-icon>
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Que souhaitez-vous écouter ?"
-        [value]="searchQuery()"
-        (input)="onSearchInput($event)"
-        autocomplete="off"
-      />
+    <div class="search-header">
+      <div class="search-input-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Que souhaitez-vous écouter ?"
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+          autocomplete="off"
+        />
+      </div>
+      <user-profile></user-profile>
     </div>
   </div>
 
